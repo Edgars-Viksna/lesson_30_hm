@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,6 +8,8 @@ public class Main {
 
         List<Integer> integerList = List.of(2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5);
         List<String> stringList = List.of("aaa", "bbb", "bbb", "ccc", "ccc", "ccc");
+        List<String> stringList1 = List.of("bbb", "bbb", "ccc", "ccc", "ccc");
+
         List<Person> personList = List.of(new Person("Aaaaa"), new Person("Aaaaa"),
                 new Person("Bbbbb"), new Person("Ccccc"));
         List<Book> bookList = List.of(new Book("Alladin", 100), new Book("Alladin", 100),
@@ -34,14 +37,17 @@ public class Main {
         System.out.println("---------- Method count Book -------------");
         System.out.println(count(bookList, new Book("Alladin", 100)));
 
+        System.out.println("---------- Method count same position -------------");
+        System.out.println(samePosition(stringList, stringList1));
+
 
     }
 
 // -------------------------------- Methods --------------------
 
     public static <T> void print(List<T> list) {
-        for (T value : list) {
-            System.out.println(value);
+        for (T item : list) {
+            System.out.println(item);
         }
     }
 
@@ -55,71 +61,80 @@ public class Main {
         return result;
     }
 
-
+    public static <T> List<T> samePosition(List<T> list1, List<T> list2) {
+        List<T> result = new ArrayList<>();
+        for (int i = 0; i < list1.size() && i < list2.size(); i++) {
+            if (list1.get(i).equals(list2.get(i))) {
+                result.add(list1.get(i));
+            }
+        }
+        return result;
+    }
 }
 
 
 // -------------------------------- Sub classes ---------------
 
-class Person {
-    private String name;
+    class Person {
+        private String name;
 
-    public Person(String name) {
-        this.name = name;
+        public Person(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "name='" + name + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Person person = (Person) o;
+            return Objects.equals(name, person.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(name);
+        }
     }
 
-    public String getName() {
-        return name;
+    class Book {
+        private String title;
+        private int pages;
+
+        public Book(String title, int pages) {
+            this.title = title;
+            this.pages = pages;
+        }
+
+        @Override
+        public String toString() {
+            return "Book{" +
+                    "title='" + title + '\'' +
+                    ", pages=" + pages +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Book book = (Book) o;
+            return pages == book.pages && Objects.equals(title, book.title);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(title, pages);
+        }
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(name, person.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name);
-    }
-}
-
-class Book {
-    private String title;
-    private int pages;
-
-    public Book(String title, int pages) {
-        this.title = title;
-        this.pages = pages;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", pages=" + pages +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return pages == book.pages && Objects.equals(title, book.title);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, pages);
-    }
-}
 
 
