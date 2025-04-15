@@ -54,7 +54,7 @@ public class Main {
     public static <T> int count(List<T> list, T element) {
         int result = 0;
         for (T item : list) {
-            if (item.equals(element)) {
+            if (element.equals(item)) {
                 result = result + 1;
             }
         }
